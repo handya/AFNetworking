@@ -591,6 +591,7 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
 - (void)connection:(NSURLConnection *)connection
 willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"NZBClientwillSendRequestForAuthenticationChallenge" object:nil];
     if (self.authenticationChallenge) {
         self.authenticationChallenge(connection, challenge);
         return;
