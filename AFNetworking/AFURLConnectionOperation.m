@@ -591,7 +591,17 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
 - (void)connection:(NSURLConnection *)connection
 willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
+
+    // ************* NZBClient Changes Start *************
+    // NZBGet appears to ignore auth challanges
+    // if user enters the wrong password, the challange will fail returning error code 0
+    // to give the user better feedback, a notification will be posted when login fails,
+    // before challenge take place
+    // NZBCLient will listen to this notification when adding or editing a server in NZBClient
+    // and present incorrent password error
     [[NSNotificationCenter defaultCenter] postNotificationName:@"NZBClientwillSendRequestForAuthenticationChallenge" object:nil];
+    // ************* NZBClient Changes End *************
+
     if (self.authenticationChallenge) {
         self.authenticationChallenge(connection, challenge);
         return;
